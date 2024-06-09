@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Config files
+src/config/config.json
+
+# Coverage directory used by testing tools
+coverage/
+
+# Production
+/build
+/dist
+
+# MacOS specific files
+.DS_Store
+
+# Linux specific files
+*~
+
+# Others
+package-lock.json

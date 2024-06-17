@@ -21,16 +21,36 @@ const AuthPage = () => {
     try {
       if (isRegister) {
         const data = await registerUser({ username, password, email });
-        localStorage.setItem("token", data.token);
+
+        if (data.error) {
+          setModalInfo({
+            type: "error",
+            message: data.error,
+          });
+        } else {
+          setModalInfo({
+            type: "success",
+            message: "Usuário cadastrado com sucesso.",
+          });
+
+          setTimeout(() => {
+            window.location.reload();
+          }, 2000);
+        }
       } else {
         const data = await loginUser(username, password);
         localStorage.setItem("token", data.token);
-      }
+        localStorage.setItem("userId", data.userId);
 
-      setModalInfo({
-        type: "success",
-        message: "Usuário logado com sucesso. Redirecionando...",
-      });
+        setModalInfo({
+          type: "success",
+          message: "Usuário logado com sucesso. Redirecionando...",
+        });
+
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 2000);
+      }
     } catch (error) {
       setModalInfo({
         type: "error",

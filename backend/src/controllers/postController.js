@@ -22,7 +22,7 @@ exports.getPosts = async (_, res) => {
     });
 
     if (posts.length === 0) {
-      return res.status(404).json({ error: "Nenhum post encontrado" });
+      return res.json({ posts });
     }
 
     res.json({ posts });

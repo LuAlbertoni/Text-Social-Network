@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./ModalMessage.module.css";
 
-const ModalMessage = ({ type, message, onClose }) => {
+const ModalMessage = ({ type, message, closeModal }) => {
   let modalClass = styles.modal;
   let icon = null;
 
@@ -21,13 +21,13 @@ const ModalMessage = ({ type, message, onClose }) => {
   }
 
   setTimeout(() => {
-    onClose();
+    closeModal();
   }, 7000);
 
   return (
     <div className={modalClass}>
       <div className={styles.content}>
-        <span className={styles.close} onClick={onClose}>
+        <span className={styles.close} onClick={closeModal}>
           &times;
         </span>
         <span className={styles.icon}>{icon}</span>

@@ -16,6 +16,24 @@ export const getPosts = async (token) => {
   }
 };
 
+export const createPost = async (content, token) => {
+  try {
+    const response = await axios.post(
+      `${baseURL}/post`,
+      { content },
+      {
+        headers: {
+          Authorization: `${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const deletePost = async (postId, token) => {
   try {
     const response = await axios.delete(`${baseURL}/post/${postId}`, {

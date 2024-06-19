@@ -4,12 +4,14 @@ import React, { useEffect, useState } from "react";
 import { getPosts } from "@/utils/postRequests";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
 import PostBox from "@/components/PostBox/PostBox";
+import PostForm from "@/components/PostForm/PostForm";
 import styles from "./page.module.css";
 
 const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [modalInfo, setModalInfo] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [showPostForm, setShowPostForm] = useState(false);
 
   const fetchPosts = async () => {
     try {
@@ -27,7 +29,7 @@ const PostsPage = () => {
     } catch (error) {
       setModalInfo({
         type: "error",
-        message: "Ocorreu um erro. Verifique o console para mais informações.",
+        message: "Ocorreu um erro ao carregar os posts.",
       });
       console.error(error);
     }
@@ -43,24 +45,43 @@ const PostsPage = () => {
     setModalInfo(null);
   };
 
+  const openPostForm = () => {
+    setShowPostForm(true);
+  };
+
+  const closePostForm = () => {
+    setShowPostForm(false);
+  };
+
   return (
     <div className={styles.root}>
       <h1>Posts</h1>
+      <button onClick={openPostForm}>Criar Novo Post</button>
+      {showPostForm && (
+        <PostForm
+          fetchPosts={fetchPosts}
+          closePostForm={closePostForm}
+        />
+      )}
       <ul>
-        {posts.map((post) => (
-          <PostBox
-            key={post.id}
-            post={post}
-            userId={userId}
-            fetchPosts={fetchPosts}
-          />
-        ))}
+        {posts.length > 0 ? (
+          posts.map((post) => (
+            <PostBox
+              key={post.id}
+              post={post}
+              userId={userId}
+              fetchPosts={fetchPosts}
+            />
+          ))
+        ) : (
+          <p>Não há posts para exibir</p>
+        )}
       </ul>
       {modalInfo && (
         <ModalMessage
           type={modalInfo.type}
           message={modalInfo.message}
-          onClose={closeModal}
+          closeModal={closeModal}
         />
       )}
     </div>

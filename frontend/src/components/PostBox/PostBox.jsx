@@ -38,14 +38,64 @@ const PostBox = ({ post, userId, fetchPosts }) => {
     }, 2000);
   };
 
+  const formatDateTime = (dateTimeString) => {
+    const date = new Date(dateTimeString);
+
+    return date.toLocaleString("pt-BR", {
+      weekday: "short",
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+      hour12: false,
+    });
+  };
+
+  const handleMenuToggle = (e) => {
+    e.stopPropagation();
+    const dropdownMenu = e.currentTarget.nextSibling;
+    dropdownMenu.classList.toggle(styles.show);
+  };
+
   return (
-    <li key={post.id}>
-      <h2>{post.user.username}</h2>
-      <p>{post.content}</p>
-      {userId && post.userId === userId && (
-        <button onClick={() => handleDelete(post.id)}>Deletar</button>
+    <div className={styles.root}>
+      <li key={post.id} className={styles.postBox}>
+        <div className={styles.header}>
+          <div className={styles.headerLeft}>
+            <h2>{post.user.username}</h2>
+            <span className={styles.timestamp}>
+              {formatDateTime(post.createdAt)}
+            </span>
+          </div>
+          {userId && post.userId === userId && (
+            <div className={styles.menu}>
+              <button
+                className={styles.menuButton}
+                onClick={(e) => handleMenuToggle(e)}
+              >
+                &#8942;
+              </button>
+              <ul className={styles.dropdownMenu}>
+                <li>
+                  <button onClick={() => handleDelete(post.id)}>Deletar</button>
+                </li>
+              </ul>
+            </div>
+          )}
+        </div>
+        <p className={styles.content}>{post.content}</p>
+      </li>
+
+      {modalInfo && (
+        <ModalMessage
+          type={modalInfo.type}
+          message={modalInfo.message}
+          closeModal={closeModal}
+        />
       )}
-    </li>
+    </div>
   );
 };
 

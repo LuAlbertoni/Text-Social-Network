@@ -11,7 +11,6 @@ const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [modalInfo, setModalInfo] = useState(null);
   const [userId, setUserId] = useState(null);
-  const [showPostForm, setShowPostForm] = useState(false);
 
   const fetchPosts = async () => {
     try {
@@ -22,7 +21,7 @@ const PostsPage = () => {
       const data = await getPosts(token);
 
       if (data && Array.isArray(data.posts)) {
-        setPosts(data.posts);
+        setPosts(data.posts.reverse()); // Inverter a ordem dos posts
       } else {
         throw new Error("Os dados recebidos não são válidos");
       }
@@ -45,36 +44,20 @@ const PostsPage = () => {
     setModalInfo(null);
   };
 
-  const openPostForm = () => {
-    setShowPostForm(true);
-  };
-
-  const closePostForm = () => {
-    setShowPostForm(false);
-  };
-
   return (
     <div className={styles.root}>
-      <h1>Posts</h1>
-      <button onClick={openPostForm}>Criar Novo Post</button>
-      {showPostForm && (
-        <PostForm
-          fetchPosts={fetchPosts}
-          closePostForm={closePostForm}
-        />
-      )}
-      <ul>
+      <PostForm fetchPosts={fetchPosts} />
+      <ul className={styles.ul}>
         {posts.length > 0 ? (
           posts.map((post) => (
-            <PostBox
-              key={post.id}
-              post={post}
-              userId={userId}
-              fetchPosts={fetchPosts}
-            />
+            <li className={styles.li} key={post.id}>
+              <PostBox post={post} userId={userId} fetchPosts={fetchPosts} />
+            </li>
           ))
         ) : (
-          <p>Não há posts para exibir</p>
+          <li className={styles.li}>
+            <p className={styles.p}>Não há posts para exibir</p>
+          </li>
         )}
       </ul>
       {modalInfo && (

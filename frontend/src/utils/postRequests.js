@@ -16,6 +16,20 @@ export const getPosts = async (token) => {
   }
 };
 
+export const getPostsByUser = async (userId, token) => {
+  try {
+    const response = await axios.get(`${baseURL}/posts/${userId}`, {
+      headers: {
+        Authorization: `${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
 export const createPost = async (content, token) => {
   try {
     const response = await axios.post(

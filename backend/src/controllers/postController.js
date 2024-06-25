@@ -61,3 +61,28 @@ exports.deletePost = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+exports.getPostsByUser = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    if (isNaN(id)) {
+      return res
+        .status(400)
+        .json({ error: "O ID do usuário deve ser um número válido" });
+    }
+
+    const posts = await Post.findAll({
+      where: { userId: id },
+      include: [{ model: User, as: "user", attributes: ["username"] }],
+    });
+
+    if (posts.length === 0) {
+      return res.json({ posts });
+    }
+
+    res.json({ posts });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};

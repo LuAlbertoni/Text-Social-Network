@@ -12,6 +12,12 @@ const PostsPage = () => {
   const [modalInfo, setModalInfo] = useState(null);
   const [userId, setUserId] = useState(null);
 
+  useEffect(() => {
+    const storedUserId = parseInt(localStorage.getItem("userId"), 10);
+    setUserId(storedUserId);
+    fetchPosts();
+  }, []);
+
   const fetchPosts = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -33,12 +39,6 @@ const PostsPage = () => {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    const storedUserId = parseInt(localStorage.getItem("userId"), 10);
-    setUserId(storedUserId);
-    fetchPosts();
-  }, []);
 
   const closeModal = () => {
     setModalInfo(null);

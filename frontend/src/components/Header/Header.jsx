@@ -1,9 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Header.module.css";
 
 const Header = () => {
+  const [isClient, setIsClient] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+    setIsLoggedIn(
+      localStorage.getItem("token") && localStorage.getItem("userId")
+    );
+  }, []);
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("clientId");
@@ -14,8 +24,7 @@ const Header = () => {
     <div className={styles.header}>
       <div className={styles["header-container"]}>
         <h1 className={styles["header-title"]}>Text Social Network</h1>
-
-        {localStorage.getItem("token") && (
+        {isClient && isLoggedIn && (
           <button className={styles["logout-button"]} onClick={handleLogout}>
             Sair
           </button>

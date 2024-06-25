@@ -60,33 +60,31 @@ const PostBox = ({ post, userId, fetchPosts }) => {
   };
 
   return (
-    <div className={styles.root}>
-      <li key={post.id} className={styles.postBox}>
-        <div className={styles.header}>
-          <div className={styles.headerLeft}>
-            <h2>{post.user.username}</h2>
-            <span className={styles.timestamp}>
-              {formatDateTime(post.createdAt)}
-            </span>
-          </div>
-          {userId && post.userId === userId && (
-            <div className={styles.menu}>
-              <button
-                className={styles.menuButton}
-                onClick={(e) => handleMenuToggle(e)}
-              >
-                &#8942;
-              </button>
-              <ul className={styles.dropdownMenu}>
-                <li>
-                  <button onClick={() => handleDelete(post.id)}>Deletar</button>
-                </li>
-              </ul>
-            </div>
-          )}
+    <div className={styles.postBox}>
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
+          <h2>{post.user.username}</h2>
+          <span className={styles.timestamp}>
+            {formatDateTime(post.createdAt)}
+          </span>
         </div>
-        <p className={styles.content}>{post.content}</p>
-      </li>
+        {userId && post.userId === userId && (
+          <div className={styles.menu}>
+            <button
+              className={styles.menuButton}
+              onClick={(e) => handleMenuToggle(e)}
+            >
+              &#8942;
+            </button>
+            <ul className={styles.dropdownMenu}>
+              <li>
+                <button onClick={() => handleDelete(post.id)}>Deletar</button>
+              </li>
+            </ul>
+          </div>
+        )}
+      </div>
+      <p className={styles.content}>{post.content}</p>
 
       {modalInfo && (
         <ModalMessage

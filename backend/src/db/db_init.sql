@@ -15,7 +15,7 @@ CREATE TABLE
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
     );
 
--- Criar a tabela de tweets
+-- Criar a tabela de posts
 CREATE TABLE
     Posts (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -23,5 +23,5 @@ CREATE TABLE
         userId INT,
         createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        FOREIGN KEY (userId) REFERENCES Users (id)
+        FOREIGN KEY (userId) REFERENCES Users (id) ON DELETE CASCADE
     );

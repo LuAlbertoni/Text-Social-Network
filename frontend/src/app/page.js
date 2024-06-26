@@ -27,7 +27,7 @@ const PostsPage = () => {
       const data = await getPosts(token);
 
       if (data && Array.isArray(data.posts)) {
-        setPosts(data.posts.reverse()); // Inverter a ordem dos posts
+        setPosts(data.posts.reverse());
       } else {
         throw new Error("Os dados recebidos não são válidos");
       }

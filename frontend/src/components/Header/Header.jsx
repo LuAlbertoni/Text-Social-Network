@@ -23,7 +23,9 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles["header-container"]}>
-        <h1 className={styles["header-title"]}>Text Social Network</h1>
+        <a href="/" className={styles["header-link"]}>
+          <h1 className={styles["header-title"]}>Text Social Network</h1>
+        </a>
         {isClient && isLoggedIn && (
           <button className={styles["logout-button"]} onClick={handleLogout}>
             Sair

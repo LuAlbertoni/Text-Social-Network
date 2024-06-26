@@ -63,7 +63,9 @@ const PostBox = ({ post, userId, fetchPosts }) => {
     <div className={styles.postBox}>
       <div className={styles.header}>
         <div className={styles.headerLeft}>
-          <h2>{post.user.username}</h2>
+          <a href={`/profile/${post.userId}`} className={styles.userLink}>
+            <h2>{post.user.username}</h2>
+          </a>
           <span className={styles.timestamp}>
             {formatDateTime(post.createdAt)}
           </span>

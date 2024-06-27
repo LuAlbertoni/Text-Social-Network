@@ -4,7 +4,7 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export const getBasicUserInfo = async (userId, token) => {
   try {
-    const response = await axios.get(`${baseURL}/getBasicUserInfo/${userId}`, {
+    const response = await axios.get(`${baseURL}/user/getBasicUserInfo/${userId}`, {
       headers: {
         Authorization: `${token}`,
       },

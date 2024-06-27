@@ -63,10 +63,6 @@ const AuthPage = () => {
     }
   };
 
-  const closeModal = () => {
-    setModalInfo(null);
-  };
-
   return (
     <div className={styles.root}>
       <h1>{isRegister ? "Cadastro" : "Login"}</h1>
@@ -108,14 +104,8 @@ const AuthPage = () => {
           ? "Já tem uma conta? Faça login"
           : "Não tem uma conta? Cadastre-se"}
       </button>
-
-      {}
       {modalInfo && (
-        <ModalMessage
-          type={modalInfo.type}
-          message={modalInfo.message}
-          onClose={closeModal}
-        />
+        <ModalMessage type={modalInfo.type} message={modalInfo.message} />
       )}
     </div>
   );

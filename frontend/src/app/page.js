@@ -40,10 +40,6 @@ const PostsPage = () => {
     }
   };
 
-  const closeModal = () => {
-    setModalInfo(null);
-  };
-
   return (
     <div className={styles.root}>
       <PostForm fetchPosts={fetchPosts} />
@@ -61,11 +57,7 @@ const PostsPage = () => {
         )}
       </ul>
       {modalInfo && (
-        <ModalMessage
-          type={modalInfo.type}
-          message={modalInfo.message}
-          closeModal={closeModal}
-        />
+        <ModalMessage type={modalInfo.type} message={modalInfo.message} />
       )}
     </div>
   );

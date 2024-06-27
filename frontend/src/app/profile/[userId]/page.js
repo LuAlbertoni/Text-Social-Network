@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { getPostsByUser } from "@/utils/postRequests";
+import { getBasicUserInfo } from "@/utils/userRequests";
 import PostBox from "@/components/PostBox/PostBox";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
 import styles from "./profile.module.css";
@@ -9,15 +10,30 @@ import styles from "./profile.module.css";
 function ProfilePage({ params }) {
   const [posts, setPosts] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
-    if (storedUserId !== null) {
-      setUserId(parseInt(storedUserId, 10));
-      fetchPosts(parseInt(storedUserId, 10));
+    if (params.userId) {
+      setUserId(parseInt(params.userId, 10));
+
+      fetchPosts(parseInt(params.userId, 10));
+      fetchUserInfo(parseInt(params.userId, 10));
     }
-  }, []);
+  }, [params.userId]);
+
+  const fetchUserInfo = async (paramsUserId) => {
+    try {
+      const userData = await getBasicUserInfo(
+        paramsUserId,
+        localStorage.getItem("token")
+      );
+
+      setUserInfo(userData);
+    } catch (error) {
+      setError(error);
+    }
+  };
 
   const fetchPosts = async (paramsUserId) => {
     try {
@@ -35,6 +51,7 @@ function ProfilePage({ params }) {
 
   return (
     <div className={styles.root}>
+      <h1 className={styles.h1}>Posts de {userInfo?.user.username}</h1>
       <ul className={styles.ul}>
         {posts.length > 0 ? (
           posts.map((post, index) => (

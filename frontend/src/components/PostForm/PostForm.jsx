@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createPost } from "@/utils/postRequests";
 import styles from "./PostForm.module.css";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
@@ -6,10 +6,6 @@ import ModalMessage from "@/components/ModalMessage/ModalMessage";
 const PostForm = ({ fetchPosts }) => {
   const [post, setPost] = useState("");
   const [modalInfo, setModalInfo] = useState(null);
-
-  const closeModal = () => {
-    setModalInfo(null);
-  };
 
   const handleCreate = () => {
     const token = localStorage.getItem("token");
@@ -56,11 +52,7 @@ const PostForm = ({ fetchPosts }) => {
         onChange={handleChangePost}
       />
       {modalInfo && (
-        <ModalMessage
-          type={modalInfo.type}
-          message={modalInfo.message}
-          closeModal={closeModal}
-        />
+        <ModalMessage type={modalInfo.type} message={modalInfo.message} />
       )}
     </div>
   );

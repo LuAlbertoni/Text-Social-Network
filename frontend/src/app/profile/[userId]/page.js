@@ -5,22 +5,36 @@ import { getPostsByUser } from "@/utils/postRequests";
 import { getBasicUserInfo } from "@/utils/userRequests";
 import PostBox from "@/components/PostBox/PostBox";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
+import EditUserInfoPopup from "@/components/EditUserInfoPopup/EditUserInfoPopup";
 import styles from "./profile.module.css";
 
 function ProfilePage({ params }) {
   const [posts, setPosts] = useState([]);
   const [userId, setUserId] = useState(null);
+  const [userProfileId, setUserProfileId] = useState(null);
   const [userInfo, setUserInfo] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editPopupVisible, setEditPopupVisible] = useState(false);
 
   useEffect(() => {
-    if (params.userId) {
-      setUserId(parseInt(params.userId, 10));
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(parseInt(storedUserId, 10));
+    }
 
-      fetchPosts(parseInt(params.userId, 10));
-      fetchUserInfo(parseInt(params.userId, 10));
+    if (params.userId) {
+      setUserProfileId(parseInt(params.userId, 10));
     }
   }, [params.userId]);
+
+  useEffect(() => {
+    if (userId !== null && userProfileId !== null) {
+      setLoading(false);
+      fetchUserInfo(userProfileId);
+      fetchPosts(userProfileId);
+    }
+  }, [userId, userProfileId]);
 
   const fetchUserInfo = async (paramsUserId) => {
     try {
@@ -49,9 +63,31 @@ function ProfilePage({ params }) {
     }
   };
 
+  const handleEditClick = () => {
+    setEditPopupVisible(true);
+  };
+
+  const handleCloseEditPopup = () => {
+    setEditPopupVisible(false);
+  };
+
+  if (loading) {
+    return <div className={styles.loading}>Carregando...</div>;
+  }
+
   return (
     <div className={styles.root}>
-      <h1 className={styles.h1}>Posts de {userInfo?.user.username}</h1>
+      <div className={styles.profileInfo}>
+        <h1 className={styles.h1}>Perfil de {userInfo?.user.username}</h1>
+        <p className={styles.p}>
+          Entrou em {new Date(userInfo?.user.createdAt).toLocaleDateString()}
+        </p>
+        {userId === userProfileId && (
+          <button className={styles.button} onClick={handleEditClick}>
+            Editar
+          </button>
+        )}
+      </div>
       <ul className={styles.ul}>
         {posts.length > 0 ? (
           posts.map((post, index) => (
@@ -59,7 +95,7 @@ function ProfilePage({ params }) {
               <PostBox
                 post={post}
                 userId={userId}
-                fetchPosts={() => fetchPosts(userId)}
+                fetchPosts={() => fetchPosts(userProfileId)}
               />
               {index % 2 === 0 && index !== posts.length - 1 && (
                 <div className={styles.columnDivider}></div>
@@ -79,6 +115,13 @@ function ProfilePage({ params }) {
         <ModalMessage
           type="error"
           message="Ocorreu um erro ao carregar os posts."
+        />
+      )}
+      {editPopupVisible && (
+        <EditUserInfoPopup
+          userId={userId}
+          token={localStorage.getItem("token")}
+          onClose={handleCloseEditPopup}
         />
       )}
     </div>

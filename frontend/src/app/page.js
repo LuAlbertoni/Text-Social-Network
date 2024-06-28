@@ -11,6 +11,7 @@ const PostsPage = () => {
   const [posts, setPosts] = useState([]);
   const [modalInfo, setModalInfo] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUserId = parseInt(localStorage.getItem("userId"), 10);
@@ -37,8 +38,14 @@ const PostsPage = () => {
         message: "Ocorreu um erro ao carregar os posts.",
       });
       console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <div className={styles.loading}>Carregando...</div>;
+  }
 
   return (
     <div className={styles.root}>

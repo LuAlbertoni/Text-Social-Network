@@ -42,3 +42,12 @@
 .button:hover {
   background-color: var(--color-primary-dark);
 }
+
+.loading {
+  font-size: 18px;
+  color: var(--color-text-secondary);
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

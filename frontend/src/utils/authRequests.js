@@ -4,21 +4,21 @@ const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
 export const registerUser = async (userData) => {
   try {
-    const response = await axios.post(`${baseURL}/register`, userData);
-    return response.data;
-  } catch (error) {
-    throw error;
+    const res = await axios.post(`${baseURL}/register`, userData);
+    return res.data;
+  } catch (err) {
+    throw err;
   }
 };
 
 export const loginUser = async (username, password) => {
   try {
-    const response = await axios.post(`${baseURL}/login`, {
+    const res = await axios.post(`${baseURL}/login`, {
       username,
       password,
     });
-    return response.data;
-  } catch (error) {
-    throw error;
+    return res.data;
+  } catch (err) {
+    throw err;
   }
 };

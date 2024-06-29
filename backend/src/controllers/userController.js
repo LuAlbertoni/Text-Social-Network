@@ -75,10 +75,22 @@ exports.updateUserInfo = async (req, res) => {
     }
 
     if (username) {
+      const usernameExists = await User.findOne({ where: { username } });
+
+      if (usernameExists) {
+        return res.status(400).json({ error: "Nome de usuário já existe" });
+      }
+      
       user.username = username;
     }
 
     if (email) {
+      const emailExists = await User.findOne({ where: { email } });
+
+      if (emailExists) {
+        return res.status(400).json({ error: "Email já existe" });
+      }
+      
       user.email = email;
     }
 

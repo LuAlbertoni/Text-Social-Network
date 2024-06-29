@@ -111,12 +111,8 @@ function ProfilePage({ params }) {
           </li>
         )}
       </ul>
-      {error && (
-        <ModalMessage
-          type="error"
-          message="Ocorreu um erro ao carregar os posts."
-        />
-      )}
+      {error && <ModalMessage type="error" message={error} />}
+
       {editPopupVisible && (
         <EditUserInfoPopup
           userId={userId}

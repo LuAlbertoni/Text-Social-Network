@@ -9,8 +9,9 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
     password: "",
     email: "",
   });
+
   const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -21,10 +22,15 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(null);
     try {
       const data = await updateUserInfo(userId, token, formData);
-      setSuccessMessage("Informações atualizadas com sucesso!");
-      onClose();
+
+      setSuccess(data.message || "Informações atualizadas com sucesso!");
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     } catch (error) {
       setError("Erro ao atualizar informações. Por favor, tente novamente.");
       console.error(error);
@@ -39,9 +45,7 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
         </span>
         <h2 className={styles.popupTitle}>Editar Informações</h2>
         {error && <ModalMessage type="error" message={error} />}
-        {successMessage && (
-          <ModalMessage type="success" message={successMessage} />
-        )}
+        {success && <ModalMessage type="success" message={success} />}
         <form className={styles.popupForm} onSubmit={handleSubmit}>
           <label className={styles.popupLabel} htmlFor="username">
             Username:
@@ -53,7 +57,6 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
             name="username"
             value={formData.username}
             onChange={handleChange}
-            required
           />
           <label className={styles.popupLabel} htmlFor="password">
             Password:
@@ -65,7 +68,6 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            required
           />
           <label className={styles.popupLabel} htmlFor="email">
             Email:
@@ -77,7 +79,6 @@ const EditUserInfoPopup = ({ userId, token, onClose }) => {
             name="email"
             value={formData.email}
             onChange={handleChange}
-            required
           />
           <button className={styles.popupButton} type="submit">
             Salvar Alterações

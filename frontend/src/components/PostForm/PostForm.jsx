@@ -10,11 +10,6 @@ const PostForm = ({ fetchPosts }) => {
   const handleCreate = () => {
     const token = localStorage.getItem("token");
 
-    if (!post.trim()) {
-      setModalInfo({ type: "error", message: "O post não pode estar vazio." });
-      return;
-    }
-
     setModalInfo({ type: "info", message: "Enviando post..." });
 
     createPost(post, token)
@@ -41,9 +36,16 @@ const PostForm = ({ fetchPosts }) => {
     <div className={styles.root}>
       <div className={styles.header}>
         <h2>Criar Post</h2>
-        <button className={styles.button} onClick={handleCreate}>
-          Enviar
-        </button>
+
+        {post.length === 0 ? (
+          <button className={styles.button} disabled>
+            Enviar
+          </button>
+        ) : (
+          <button className={styles.button} onClick={handleCreate}>
+            Enviar
+          </button>
+        )}
       </div>
       <textarea
         className={styles.textarea}

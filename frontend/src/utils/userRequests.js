@@ -2,13 +2,9 @@ import axios from "axios";
 
 const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
-export const getBasicUserInfo = async (userId, token) => {
+export const getBasicUserInfo = async (userId) => {
   try {
-    const res = await axios.get(`${baseURL}/user/getBasicUserInfo/${userId}`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
+    const res = await axios.get(`${baseURL}/user/getBasicUserInfo/${userId}`);
 
     return res.data;
   } catch (err) {

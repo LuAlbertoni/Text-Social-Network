@@ -47,9 +47,7 @@ const AuthPage = () => {
           message: "Usuário logado com sucesso. Redirecionando...",
         });
 
-        setTimeout(() => {
-          window.location.href = "/";
-        }, 2000);
+        window.location.href = "/";
       }
     } catch (error) {
       setModalInfo({

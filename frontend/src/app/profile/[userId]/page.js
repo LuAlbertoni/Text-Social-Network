@@ -18,7 +18,8 @@ function ProfilePage({ params }) {
   const [editPopupVisible, setEditPopupVisible] = useState(false);
 
   useEffect(() => {
-    const storedUserId = localStorage.getItem("userId");
+    const storedUserId = localStorage.getItem("userId") || null;
+
     if (storedUserId) {
       setUserId(parseInt(storedUserId, 10));
     }
@@ -29,37 +30,28 @@ function ProfilePage({ params }) {
   }, [params.userId]);
 
   useEffect(() => {
-    if (userId !== null && userProfileId !== null) {
-      setLoading(false);
+    if (userProfileId !== null) {
       fetchUserInfo(userProfileId);
-      fetchPosts(userProfileId);
+      fetchPosts(userProfileId).then(() => setLoading(false));
     }
-  }, [userId, userProfileId]);
+  }, [userProfileId]);
 
   const fetchUserInfo = async (paramsUserId) => {
     try {
-      const userData = await getBasicUserInfo(
-        paramsUserId,
-        localStorage.getItem("token")
-      );
-
+      const userData = await getBasicUserInfo(paramsUserId);
       setUserInfo(userData);
     } catch (error) {
-      setError(error);
+      setError(error.message || "Erro ao carregar informações do usuário.");
     }
   };
 
   const fetchPosts = async (paramsUserId) => {
     try {
-      const postsData = await getPostsByUser(
-        paramsUserId,
-        localStorage.getItem("token")
-      );
-
+      const postsData = await getPostsByUser(paramsUserId);
       postsData.posts.reverse();
       setPosts(postsData.posts);
     } catch (error) {
-      setError(error);
+      setError(error.message || "Erro ao carregar posts.");
     }
   };
 

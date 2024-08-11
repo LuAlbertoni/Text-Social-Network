@@ -16,13 +16,9 @@ export const getPosts = async (token) => {
   }
 };
 
-export const getPostsByUser = async (userId, token) => {
+export const getPostsByUser = async (userId) => {
   try {
-    const res = await axios.get(`${baseURL}/posts/${userId}`, {
-      headers: {
-        Authorization: `${token}`,
-      },
-    });
+    const res = await axios.get(`${baseURL}/posts/${userId}`);
 
     return res.data;
   } catch (err) {

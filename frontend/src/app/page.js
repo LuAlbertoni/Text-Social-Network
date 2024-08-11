@@ -14,18 +14,14 @@ const PostsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUserId = parseInt(localStorage.getItem("userId"), 10);
+    const storedUserId = parseInt(localStorage.getItem("userId"), 10) || null;
     setUserId(storedUserId);
     fetchPosts();
   }, []);
 
   const fetchPosts = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        throw new Error("Token não encontrado");
-      }
-      const data = await getPosts(token);
+      const data = await getPosts();
 
       if (data && Array.isArray(data.posts)) {
         setPosts(data.posts.reverse());
@@ -49,7 +45,9 @@ const PostsPage = () => {
 
   return (
     <div className={styles.root}>
-      <PostForm fetchPosts={fetchPosts} />
+      {userId && <PostForm fetchPosts={fetchPosts} />}{" "}
+      <h1 className={styles.h1}>Posts</h1>
+      <p className={styles.p}>Veja os posts de outros usuários</p>
       <ul className={styles.ul}>
         {posts.length > 0 ? (
           posts.map((post) => (

@@ -5,19 +5,25 @@ import styles from "./Header.module.css";
 
 const Header = () => {
   const [isClient, setIsClient] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
-    setIsLoggedIn(
-      localStorage.getItem("token") && localStorage.getItem("userId")
-    );
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem("token");
+      const userId = localStorage.getItem("userId");
+      setIsLoggedIn(!!token && !!userId);
+      setIsLoading(false);
+    };
+    checkLoginStatus();
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("clientId");
-    window.location.href = "/login";
+    localStorage.removeItem("userId");
+
+    window.location.reload();
   };
 
   return (
@@ -26,11 +32,17 @@ const Header = () => {
         <a href="/" className={styles["header-link"]}>
           <h1 className={styles["header-title"]}>Text Social Network</h1>
         </a>
-        {isClient && isLoggedIn && (
-          <button className={styles["logout-button"]} onClick={handleLogout}>
-            Sair
-          </button>
-        )}
+        {isClient &&
+          !isLoading &&
+          (isLoggedIn ? (
+            <button className={styles["logout-button"]} onClick={handleLogout}>
+              Sair
+            </button>
+          ) : (
+            <a href="/login" className={styles["login-button"]}>
+              Login
+            </a>
+          ))}
       </div>
     </div>
   );

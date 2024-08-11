@@ -38,10 +38,27 @@ const PostBox = ({ post, userId, fetchPosts }) => {
     }, 2000);
   };
 
+  // const formatDateTime = (dateTimeString) => {
+  //   const date = new Date(dateTimeString);
+
+  //   return date.toLocaleString("pt-BR", {
+  //     weekday: "short",
+  //     year: "numeric",
+  //     month: "short",
+  //     day: "numeric",
+  //     hour: "numeric",
+  //     minute: "numeric",
+  //     second: "numeric",
+  //     hour12: false,
+  //   });
+  // };
+
   const formatDateTime = (dateTimeString) => {
     const date = new Date(dateTimeString);
 
-    return date.toLocaleString("pt-BR", {
+    const utcDate = new Date(date.getTime() - 3 * 60 * 60 * 1000);
+
+    return utcDate.toLocaleString("pt-BR", {
       weekday: "short",
       year: "numeric",
       month: "short",
@@ -50,6 +67,7 @@ const PostBox = ({ post, userId, fetchPosts }) => {
       minute: "numeric",
       second: "numeric",
       hour12: false,
+      timeZone: "America/Sao_Paulo",
     });
   };
 
